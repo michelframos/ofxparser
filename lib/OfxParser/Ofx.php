@@ -186,10 +186,13 @@ class Ofx
         $bankAccount->routingNumber = $statementResponse->BANKACCTFROM->BANKID;
         $bankAccount->accountType = $statementResponse->BANKACCTFROM->ACCTTYPE;
         $bankAccount->balance = $statementResponse->LEDGERBAL->BALAMT;
-        $bankAccount->balanceDate = Utils::createDateTimeFromStr(
-            $statementResponse->LEDGERBAL->DTASOF,
-            true
-        );
+
+        if($statementResponse->LEDGERBAL->DTASOF):
+            $bankAccount->balanceDate = Utils::createDateTimeFromStr(
+                $statementResponse->LEDGERBAL->DTASOF,
+                true
+            );
+        endif;
 
         $bankAccount->statement = new Statement();
         $bankAccount->statement->currency = $statementResponse->CURDEF;
